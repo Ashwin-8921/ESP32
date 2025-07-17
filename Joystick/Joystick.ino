@@ -1,24 +1,27 @@
-#ifdef __cplusplus
-extern "C" {
-#endif
-// Declaration of the internal ESP32 temperature sensor function
-// This tells the compiler it's a C function, even though the rest of the code is C++
-uint8_t temprature_sens_read();
-#ifdef __cplusplus
-}
-#endif
+// Define joystick axis pins using preprocessor directives
+#define H 12  // Horizontal axis (X-axis) connected to GPIO12
+#define Y 13  // Vertical axis (Y-axis) connected to GPIO13
 
 void setup() {
-  Serial.begin(115200);  // Initialize serial communication at 115200 baud rate
+  // Start serial communication at 9600 baud rate
+  Serial.begin(9600);
+
+  // Set ADC attenuation to 11dB to allow voltage reading up to ~3.3V
+  analogSetAttenuation(ADC_11db);
 }
 
 void loop() {
-  float raw = temprature_sens_read();       // Read raw temperature value from ESP32’s internal sensor
-  float tempC = (raw - 32) / 1.8;           // Convert the raw value (F-like scale) to Celsius using formula
+  // Read and print X-axis (horizontal) value
+  Serial.print("H=");               // Print label
+  Serial.println(analogRead(H));    // Read and print analog value from GPIO12
 
-  Serial.print("Internal Temperature: ");   // Print label
-  Serial.print(tempC, 1);                   // Print temperature with 1 decimal precision
-  Serial.println(" °C");                    // Print degree Celsius unit
+  // Read and print Y-axis (vertical) value
+  Serial.print("Y=");               // Print label
+  Serial.println(analogRead(Y));    // Read and print analog value from GPIO13
 
-  delay(5000);  // Wait 5 seconds before reading again
+  // Print a separator line for clarity
+  Serial.println("--------------------------------------------");
+
+  // Wait 1 second before next reading
+  delay(1000);
 }
