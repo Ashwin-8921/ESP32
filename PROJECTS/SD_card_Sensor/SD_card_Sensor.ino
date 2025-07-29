@@ -117,5 +117,5 @@ void loop() {
     Serial.println("Out of range");
   }
 
-  delay(5000);  // Log every 5 seconds
+  delay(2000);  // Log every 5 seconds
 }
